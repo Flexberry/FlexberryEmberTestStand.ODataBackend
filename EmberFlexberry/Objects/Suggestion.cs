@@ -74,6 +74,37 @@ namespace EmberFlexberryDummy
             ""})]
     [AssociatedDetailViewAttribute("SuggestionE", "Comments", "CommentD", true, "", "Comments", true, new string[] {
             ""})]
+    [View("SuggestionEWithKarma", new string[] {
+            "Address as \'Address\'",
+            "Text as \'Text\'",
+            "Date as \'Date\'",
+            "Votes as \'Votes\'",
+            "Moderated as \'Moderated\'",
+            "Type as \'Type\'",
+            "Type.Name as \'Name\'",
+            "Author as \'Author\'",
+            "Author.Name as \'Name\'",
+            "Author.Karma as \'Karma\'",
+            "Editor1 as \'Editor1\'",
+            "Editor1.Name as \'Name\'",
+            "Editor1.Karma as \'Karma\'",
+            "CreateTime",
+            "Creator",
+            "EditTime",
+            "Editor"}, Hidden = new string[] {
+            "Type.Name",
+            "Author.Name",
+            "Editor1.Name",
+            "CreateTime",
+            "Creator",
+            "EditTime",
+            "Editor"})]
+    [AssociatedDetailViewAttribute("SuggestionEWithKarma", "Files", "SuggestionFileE", true, "", "Files", true, new string[] {
+            ""})]
+    [AssociatedDetailViewAttribute("SuggestionEWithKarma", "UserVotes", "VoteE", true, "", "User votes", true, new string[] {
+            ""})]
+    [AssociatedDetailViewAttribute("SuggestionEWithKarma", "Comments", "CommentD", true, "", "Comments", true, new string[] {
+            ""})]
     [MasterViewDefineAttribute("SuggestionE", "Type", ICSSoft.STORMNET.LookupTypeEnum.Standard, "", "Name")]
     [MasterViewDefineAttribute("SuggestionE", "Author", ICSSoft.STORMNET.LookupTypeEnum.Standard, "", "Name")]
     [View("SuggestionEWithComputedField", new string[] {
