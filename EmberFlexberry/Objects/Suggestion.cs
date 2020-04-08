@@ -156,7 +156,10 @@ namespace EmberFlexberryDummy
         
         private EmberFlexberryDummy.DetailArrayOfComment fComments;
 
-        private ICSSoft.STORMNET.UserDataTypes.NullableInt cashedCommentsCount = null; //переменная для хранения кэша поля CommentsCount
+        /// <summary>
+        /// Cash value for CommentsCount field.
+        /// </summary>
+        private ICSSoft.STORMNET.UserDataTypes.NullableInt cashedCommentsCount = null;
 
         // *** Start programmer edit section *** (Suggestion CustomMembers)
 
