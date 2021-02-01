@@ -54,5 +54,5 @@ jobs:
         set -x
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export SSH_AUTH_SOCK
-        ssh {{ github.event.inputs.user }}@${{ github.event.inputs.host }} ~{{ github.event.inputs.script }}
+        ssh {{ github.event.inputs.user }}@${{ github.event.inputs.host }} {{ github.event.inputs.script }}
         
