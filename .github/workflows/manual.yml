@@ -8,13 +8,13 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      host:
+      #host:
         # Friendly description to be shown in the UI instead of 'name'
         # description: 'Person to greet'
         # Default value if no value is explicitly provided
         # default: 'World'
         # Input has to be provided for the workflow to run
-        $ required: true
+        # required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -40,7 +40,7 @@ jobs:
         # Setup SSH agent
         export SSH_AUTH_SOCK=/tmp/ssh_agent.sock
         mkdir -p ~/.ssh
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        ssh-keyscan  stands-backend.flexberry.net >> ~/.ssh/known_hosts
         # Start ssh agent
         ssh-agent -a $SSH_AUTH_SOCK #> /dev/null
         chmod 0600 .github/workflows/secrets/id_rsa
