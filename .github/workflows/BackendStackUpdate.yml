@@ -6,12 +6,7 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-
-      user:
-        description: 'BackEnd user'
-        default: 'icsadmin'
-        required: true
-
+    
       host:
         description: 'BackEnd host'
         default: 'stands-backend.flexberry.net'
