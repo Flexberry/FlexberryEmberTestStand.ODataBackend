@@ -1,4 +1,4 @@
-name: Workflow for run (Re)start docker stack by script on Test Stand
+name: Workflow for (Re)Start docker stack by script on Test Stand
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
