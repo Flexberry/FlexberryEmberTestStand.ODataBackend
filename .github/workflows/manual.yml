@@ -1,6 +1,6 @@
 # This is a basic workflow that is manually triggered
 
-name: Manual workflow for updating docker images on Test Stand
+name: Workflow for updating docker images on Test Stand
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -55,7 +55,7 @@ jobs:
         set -x
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export SSH_AUTH_SOCK  
-        ssh icsadmin@stands-backend.flexberry.net ~icsadmin/updateStackServices.sh${{ github.event.inputs.stack }}
+        ssh icsadmin@stands-backend.flexberry.net ~icsadmin/updateStackServices.sh ${{ github.event.inputs.stack }}
 
         
         
