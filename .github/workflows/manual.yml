@@ -32,8 +32,6 @@ jobs:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}      
       run: |
         set -x
-        pwd
-        ls -la
         export ENCRYPTION_KEY
         #  Recover private key
         openssl aes-256-cbc -in .github/workflows/secrets/id_rsa.enc -out .github/workflows/secrets/id_rsa -pass pass:$ENCRYPTION_KEY -d -md sha1
@@ -53,7 +51,10 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
-        export SSH_AUTH_SOCK          
+        export SSH_AUTH_SOCK  
+        ssh-keyscan stands-backend.flexberry.net >> ~/.ssh/known_hosts
+        ls -l ~/.ssh
+        cat ~/.ssh/known_hosts                
         ssh icsadmin@stands-backend.flexberry.net pwd
         
         
