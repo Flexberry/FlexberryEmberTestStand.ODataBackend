@@ -24,11 +24,16 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+
+    - uses: actions/checkout@v2
+        
     - name: Tune ssh-keys
       env:
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}      
       run: |
         set -x
+        pwd
+        ls -la
         export ENCRYPTION_KEY
         #  Recover private key
         openssl aes-256-cbc -in .github/workflows/secrets/id_rsa.enc -out .github/workflows/secrets/id_rsa -pass pass:$ENCRYPTION_KEY -d -md sha1
