@@ -52,9 +52,6 @@ jobs:
       run: |
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export SSH_AUTH_SOCK  
-        ssh-keyscan 134.209.30.115 >> ~/.ssh/known_hosts
-        ls -l ~/.ssh
-        cat ~/.ssh/known_hosts                
         ssh icsadmin@stands-backend.flexberry.net pwd
         
         
