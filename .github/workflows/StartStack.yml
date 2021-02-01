@@ -12,9 +12,9 @@ on:
         default: 'stands-backend.flexberry.net'
         required: true
 
-      script:
-        description: 'Script To (Re)start stack'
-        default: 'flexberryGisTestStand/start.sh'
+      scriptDir:
+        description: 'ScriptDir to (Re)start stack'
+        default: 'flexberryGisTestStand'
         required: true
 
 jobs:
@@ -49,5 +49,5 @@ jobs:
         set -x
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export SSH_AUTH_SOCK
-        ssh icsadmin@${{ github.event.inputs.host }} ~icsadmin/${{ github.event.inputs.script }}
+        ssh icsadmin@${{ github.event.inputs.host }} 'cd ~icsadmin/${{ github.event.inputs.scriptDir }}; ./start.sh'
         
