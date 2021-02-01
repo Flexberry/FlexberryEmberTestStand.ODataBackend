@@ -54,7 +54,7 @@ jobs:
         set -x
         export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export SSH_AUTH_SOCK
-        ssh {{github.event.inputs.user}}@${{github.event.inputs.host}} ~{{github.event.inputs.user}}/updateStackServices.sh ${{ github.event.inputs.stack }}
+        ssh icsadmin@${{github.event.inputs.host}} ~icsadmin/updateStackServices.sh ${{ github.event.inputs.stack }}
 
 
 
