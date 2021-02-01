@@ -18,7 +18,7 @@ on:
         required: true
 
       script:
-        description: 'Stack To (Re)start stack'
+        description: 'Script To (Re)start stack'
         default: '~icsadmin/flexberryGisTestStand/start.sh'
         required: true
 
