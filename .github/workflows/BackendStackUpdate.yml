@@ -1,4 +1,4 @@
-name: Workflow for updating docker images on Test Stand
+name: Updating docker services of Stacks on Test Stand
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
