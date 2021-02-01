@@ -18,7 +18,7 @@ on:
         required: true
 
 jobs:
-  stackUpdate:
+  restartStack:
     runs-on: ubuntu-latest
 
     steps:
