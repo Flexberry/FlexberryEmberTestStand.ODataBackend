@@ -73,6 +73,11 @@
             token.Functions.Register(new Func<QueryParameters,IEnumerable<Sotrudnik>>(GetMastersForTest));
             token.Functions.RegisterAction(new Func<QueryParameters, string, string, object>(DeleteAllSelect));
 
+            token.Functions.RegisterAction(new Func<IEnumerable<ApplicationUser>>(ODataTestTypedResult));
+            token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestNotTypedResult));
+            token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestMultyTypedResult));
+            token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestMultyTypedWithLinksResult));
+
             // Event handlers
             token.Events.CallbackAfterCreate = CallbackAfterCreate;
         }
@@ -191,6 +196,42 @@
                     message = msg
                 };
             }
+        }
+
+        private static IEnumerable<ApplicationUser> ODataTestTypedResult()
+        {
+            return new ApplicationUser[]
+            {
+                new ApplicationUser() { Name = "TestName1", EMail = "TestEmail1" },
+                new ApplicationUser() { Name = "TestName2", EMail = "TestEmail2" },
+                new ApplicationUser() { Name = "TestName3", EMail = "TestEmail3" }
+            };
+        }
+
+        private static IEnumerable<DataObject> ODataTestNotTypedResult()
+        {
+            return ODataTestTypedResult();
+        }
+
+        private static IEnumerable<DataObject> ODataTestMultyTypedResult()
+        {
+            return new DataObject[]
+            {
+                new ApplicationUser() { Name = "TestUserName", EMail = "TestUserEmail" },
+                new Suggestion() { Address = "TestSuggestionAddress", Text = "TestSuggestionText" },
+                new SuggestionType() { Name = "TestSuggestionTypeName" }
+            };
+        }
+
+        private static IEnumerable<DataObject> ODataTestMultyTypedWithLinksResult()
+        {
+            var applicationUser = new ApplicationUser() { Name = "TestLinkedUser" };
+
+            return new DataObject[]
+            {
+                new ApplicationUser() { Name = "TestUserName", EMail = "TestUserEmail" },
+                new Suggestion() { Address = "TestSuggestionAddress", Text = "TestSuggestionText", Author = applicationUser }
+            };
         }
     }
 }
