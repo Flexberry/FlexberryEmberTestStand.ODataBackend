@@ -198,6 +198,10 @@
             }
         }
 
+        /// <summary>
+        /// OData action for returning one-typed array with known type.
+        /// </summary>
+        /// <returns>One-typed array with known type.</returns>
         private static IEnumerable<ApplicationUser> ODataTestTypedResult()
         {
             return new ApplicationUser[]
@@ -208,11 +212,19 @@
             };
         }
 
+        /// <summary>
+        /// OData action for returning one-typed array with unknown type.
+        /// </summary>
+        /// <returns>One-typed array with unknown type.</returns>
         private static IEnumerable<DataObject> ODataTestNotTypedResult()
         {
             return ODataTestTypedResult();
         }
 
+        /// <summary>
+        /// OData action for returning multy-typed array.
+        /// </summary>
+        /// <returns>Multy-typed array.</returns>
         private static IEnumerable<DataObject> ODataTestMultyTypedResult()
         {
             return new DataObject[]
@@ -223,6 +235,11 @@
             };
         }
 
+        /// <summary>
+        /// OData action for returning multy-typed array with masters.
+        /// But there is a problem with returning masters from odata actions.
+        /// </summary>
+        /// <returns>Multy-typed array with masters.</returns>
         private static IEnumerable<DataObject> ODataTestMultyTypedWithLinksResult()
         {
             var applicationUser = new ApplicationUser() { Name = "TestLinkedUser" };
