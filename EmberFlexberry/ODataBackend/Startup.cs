@@ -8,21 +8,28 @@
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
+    using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using NewPlatform.Flexberry;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.Reports.ExportToExcel;
     using NewPlatform.Flexberry.Services;
     using Unity;
+    using Unity.Injection;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -108,7 +115,7 @@
                     typeof(Lock).Assembly,
                 };
 
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, false);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, true);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
@@ -196,9 +203,27 @@
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
+            container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
+
             container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
+            container.RegisterSingleton<IExportService, ExportExcelODataService>();
+            container.RegisterSingleton<ISpreadsheetCustomizer, SpreadsheetCustomizer>();
+            container.RegisterSingleton<IConfigResolver, ConfigResolver>();
+            container.RegisterType<ICurrentUser, EmptyCurrentUser>();
+            container.RegisterType<IAuditService, AuditService>(
+                new InjectionConstructor(container.Resolve<ICurrentUser>()));
+
             container.RegisterSingleton<IDataService, PostgresDataService>(
-                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+            new InjectionConstructor(
+                container.Resolve<ISecurityManager>(),
+                container.Resolve<IAuditService>(),
+                container.Resolve<IBusinessServerProvider>()),
+            new InjectionProperty(nameof(PostgresDataService.CustomizationString), connStr));
+
+            var ds = container.Resolve<IDataService>();
+            DataServiceProvider.DataService = ds;
+            ExternalLangDef.LanguageDef = new ExternalLangDef(ds);
+            DetailVariableDef.ViewGenerator = null;
         }
 
         /// <summary>
