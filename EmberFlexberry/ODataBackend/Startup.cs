@@ -204,14 +204,15 @@
             }
 
             container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
-
-            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
-            container.RegisterSingleton<IExportService, ExportExcelODataService>();
-            container.RegisterSingleton<ISpreadsheetCustomizer, SpreadsheetCustomizer>();
-            container.RegisterSingleton<IConfigResolver, ConfigResolver>();
             container.RegisterType<ICurrentUser, EmptyCurrentUser>();
-            container.RegisterType<IAuditService, AuditService>(
-                new InjectionConstructor(container.Resolve<ICurrentUser>()));
+
+            // Uncomment for code registration instead of config registration
+            //container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
+            //container.RegisterSingleton<IExportService, ExportExcelODataService>();
+            //container.RegisterSingleton<ISpreadsheetCustomizer, SpreadsheetCustomizer>();
+            //container.RegisterSingleton<IConfigResolver, ConfigResolver>();
+            //container.RegisterType<IAuditService, AuditService>(
+            //    new InjectionConstructor(container.Resolve<ICurrentUser>()));
 
             container.RegisterSingleton<IDataService, PostgresDataService>(
             new InjectionConstructor(
