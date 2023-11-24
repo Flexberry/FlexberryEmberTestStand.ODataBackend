@@ -1,10 +1,14 @@
 ﻿namespace EmberFlexberryDummy
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Net;
+    using System.Reflection;
+    using System.Text;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -132,6 +136,7 @@
                 // Event handlers
                 token.Events.CallbackAfterCreate = CallbackAfterCreate;
                 token.Events.CallbackBeforeUpdate = CallBackBeforeUpdate;
+                token.Events.CallbackAfterInternalServerError = AfterInternalError;
             });
         }
 
@@ -230,8 +235,7 @@
 
         private static bool CallBackBeforeUpdate(DataObject obj)
         {
-            if (obj is Comment
-                    && ((Comment)obj).Text == "Test 11111111-1111-1111-1111-111111111111")
+            if (obj is Comment && ((Comment)obj).Text == "Test 11111111-1111-1111-1111-111111111111")
             {
                 throw new Exception("For test purposes an exception is thrown when this comment is indented for updating.");
             }
@@ -242,6 +246,78 @@
         private static void CallbackAfterCreate(DataObject dataObject)
         {
             // TODO: implement handler
+        }
+
+        /// <summary>
+        /// Метод вызываемый при ошибках сервера.
+        /// </summary>
+        /// <param name="ex">Пойманная ошибка.</param>
+        /// <param name="code">Код ошибки.</param>
+        /// <returns>Возвращает пойманную ошибку.</returns>
+        private static Exception AfterInternalError(Exception ex, ref HttpStatusCode code)
+        {
+            if (ex != null)
+            {
+                string errorMsg = ExceptionToString(ex);
+                LogService.LogError(errorMsg);
+            }
+
+            return ex;
+        }
+
+        /// <summary>
+        /// Получить строковое представление исключения, включая вложенные (а также LoaderExceptions).
+        /// </summary>
+        /// <returns>Строковое представление.</returns>
+        private static string ExceptionToString(Exception exc)
+        {
+            if (exc == null)
+            {
+                return null;
+            }
+
+            SortedList exceptions = new SortedList();
+            int index = 0;
+            Exception exception = exc;
+            while (exception != null)
+            {
+                exceptions.Add(index, exception);
+                index++;
+                AddLoaderExceptions(exceptions, exception, ref index);
+                exception = exception.InnerException;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (DictionaryEntry entry in exceptions)
+            {
+                sb.Append("Exception level: ");
+                sb.AppendLine(entry.Key.ToString());
+                Exception ex = (Exception)entry.Value;
+                sb.AppendLine(ex.Message);
+                sb.AppendLine("Stack Trace:");
+                sb.AppendLine(ex.StackTrace);
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>Метод добавляет исключения загрузчика в отсортированный список исключений.</summary>
+        /// <param name ="exceptions">Список исключений для добавления новых исключений.</param>
+        /// <param name ="exception">Исключение для анализа и извлечения исключений.</param>
+        /// <param name ="index">Ссылка на индекс для управления порядком исключений в списке.</param>
+        /// <remarks>Этот метод используется для логирования или обработки ошибок загрузчика типов в ReflectionTypeLoadException.</remarks>
+        private static void AddLoaderExceptions(SortedList exceptions, Exception exception, ref int index)
+        {
+            if (exception is ReflectionTypeLoadException)
+            {
+                foreach (Exception loaderException in ((ReflectionTypeLoadException)exception).LoaderExceptions)
+                {
+                    exceptions.Add(index, loaderException);
+                    index++;
+                }
+            }
         }
 
         private static string Test(QueryParameters queryParameters)
