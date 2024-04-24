@@ -311,7 +311,7 @@ namespace EmberFlexberryDummy
         /// ComputedField.
         /// </summary>
         // *** Start programmer edit section *** (SuggestionType.ComputedField CustomAttributes)
-        [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.SQLDataService), "@Name@ + \' \' + @Moderated@")]
+        [DataServiceExpression(typeof(ICSSoft.STORMNET.Business.SQLDataService), "CONCAT(@Name@, ' ', CAST(@Moderated@ as TEXT))")]
         //[DataServiceExpression(typeof(ICSSoft.STORMNET.Business.MSSQLDataService), "@Name@ + \' \' + @Moderated@")]
         //[DataServiceExpression(typeof(ICSSoft.STORMNET.Business.PostgresDataService), "@Name@ || \' \' || @Moderated@")]
         //[DataServiceExpression(typeof(ICSSoft.STORMNET.Business.OracleDataService), "@Name@ || \\\' \\\' || @Moderated@")]
