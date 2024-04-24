@@ -12,16 +12,17 @@ Proper backend needs ASP-core application with database. Such pairs are created 
 3.
 
 Settings for such pairs are kept at corresponding yml-files:
-1. `ember-flexberry-stand-postgres.yml` (container is created and started by `run-postgres.cmd` and stopped by `stop-postgres.cmd`).
-2.
+1. `ember-flexberry-stand-postgres.yml` with deploy settings (container is created and started by `run-postgres.cmd` and stopped by `stop-postgres.cmd`).
+2. `ember-flexberry-stand-postgres-local.yml` with local settings (container is created and started by `run-postgres-local.cmd` and stopped by `stop-postgres-local.cmd`).
 3.
+4.
 
 
 In order to push image on docker hub:
 1) Build image with version tag (for example "1.0.1-beta01-backend").
 2) Execute `docker tag image_name:x.x.x image_name`
 
-For example, 
+For example,
 `docker tag flexberry/ember-flexberry-stand-postgres:1.0.1-beta01-postgresql flexberry/ember-flexberry-stand-postgres`
 `docker tag flexberry/ember-flexberry-stand-backend:1.0.1-beta01-backend flexberry/ember-flexberry-stand-backend`
 
