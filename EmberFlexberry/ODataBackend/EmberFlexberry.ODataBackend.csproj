@@ -7,6 +7,7 @@
     <AssemblyName>EmberFlexberry.ODataBackend</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <XunitStartupFullName>EmberFlexberryDummy.Startup</XunitStartupFullName>
+	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
   <ItemGroup>
     <None Update="appsettings.json"><CopyToOutputDirectory>Always</CopyToOutputDirectory></None>
