@@ -5,6 +5,8 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
+    using System.Net.Http;
+    using System.Net;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -132,6 +134,7 @@
                 // Event handlers
                 token.Events.CallbackAfterCreate = CallbackAfterCreate;
                 token.Events.CallbackBeforeUpdate = CallBackBeforeUpdate;
+                token.Events.CallbackAfterInternalServerError = AfterInternalError;
             });
         }
 
@@ -242,6 +245,11 @@
         private static void CallbackAfterCreate(DataObject dataObject)
         {
             // TODO: implement handler
+        }
+
+        private static Exception AfterInternalError(Exception ex, ref HttpStatusCode code)
+        {
+            return ex;
         }
 
         private static string Test(QueryParameters queryParameters)
