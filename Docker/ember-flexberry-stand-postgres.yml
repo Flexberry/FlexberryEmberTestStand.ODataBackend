@@ -9,7 +9,7 @@ services:
       - 80:80
     environment:
       - UploadUrl=Uploads
-      - BackendRoot=https://ember-stand.flexberry-foundation.ru
+      - BackendRoot=https://ember-stand.flexberry.org
       - DefConnStr=SERVER=app-postgres-db;User ID=postgres;Password=p@ssw0rd;Port=5432;database=appdb;
 
   app-postgres-db:
