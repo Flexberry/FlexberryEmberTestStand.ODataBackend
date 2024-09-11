@@ -23,7 +23,7 @@ RUN \
   cd ember-flexberry; \
   ember build --environment=development-loc;
   
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS backend
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend
 
 COPY /EmberFlexberry /EmberFlexberry
 
@@ -32,9 +32,9 @@ WORKDIR /EmberFlexberry
 RUN \
   dotnet restore EmberFlexberry.sln;\
   dotnet build EmberFlexberry.sln -c Release;\
-  dotnet publish ODataBackend/EmberFlexberry.ODataBackend.csproj -c Release -o out -f net7.0
+  dotnet publish ODataBackend/EmberFlexberry.ODataBackend.csproj -c Release -o out -f net8.0
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
 WORKDIR /app
 
