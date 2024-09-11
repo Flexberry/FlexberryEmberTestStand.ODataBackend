@@ -32,17 +32,18 @@ WORKDIR /EmberFlexberry
 RUN \
   dotnet restore EmberFlexberry.sln;\
   dotnet build EmberFlexberry.sln -c Release;\
-  dotnet publish ODataBackend/EmberFlexberry.ODataBackend.csproj -c Release -o out -f net8.0
+  dotnet publish ODataBackend/EmberFlexberry.ODataBackend.csproj -c Release -o out /p:UseAppHost=true
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
-
+USER app
 WORKDIR /app
+EXPOSE 80
 
-COPY --from=backend /EmberFlexberry/out ./
+COPY --from=backend /EmberFlexberry/out .
 COPY --from=ember_app /ember-app/ember-flexberry/dist ./wwwroot/
 
 # Check webapi responses
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
   CMD curl -f "http://0.0.0.0/health" || exit
 
-ENTRYPOINT ["dotnet", "EmberFlexberry.ODataBackend.dll"]
+ENTRYPOINT ["./EmberFlexberry.ODataBackend"]
