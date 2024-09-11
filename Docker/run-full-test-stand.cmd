@@ -1,0 +1,1 @@
+docker-compose -f full-test-stand.yml up --build -d
