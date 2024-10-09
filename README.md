@@ -1,6 +1,6 @@
 Install [Docker](https://docker.com) if it not installed yet and start Docker.
 
-Then start Docker compose with PostgreSQL and .NET application by command from root folder this repository:
+Then start Docker compose with PostgreSQL and .NET 8 application by command from root folder this repository:
 
 ```sh
 ./Docker/run-full-test-stand.cmd
