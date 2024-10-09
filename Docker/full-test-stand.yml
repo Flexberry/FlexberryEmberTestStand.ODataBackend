@@ -12,6 +12,8 @@
       - UploadUrl=Uploads
       - BackendRoot=http://localhost
       - DefConnStr=SERVER=app-postgres-db;User ID=postgres;Password=p@ssw0rd;Port=5432;database=appdb;
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_VIRTUALIZATION=Docker
 
   app-postgres-db:
     build:
