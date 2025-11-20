@@ -85,6 +85,7 @@
         {
             LogService.LogInfo("Инициирован запуск приложения.");
 
+            app.UseMiddleware<PrivateNetworkAccessMiddleware>();
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -136,6 +137,8 @@
                 token.Events.CallbackBeforeUpdate = CallBackBeforeUpdate;
                 token.Events.CallbackAfterInternalServerError = AfterInternalError;
             });
+
+            var dataService = DataServiceProvider.DataService;
         }
 
         /// <summary>
