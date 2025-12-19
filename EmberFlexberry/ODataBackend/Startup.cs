@@ -109,7 +109,7 @@
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, true);
 
                 var token = builder.MapDataObjectRoute(modelBuilder);
 
