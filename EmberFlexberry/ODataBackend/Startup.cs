@@ -5,18 +5,22 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
-    using System.Net.Http;
     using System.Net;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
+    using ICSSoft.STORMNET.Windows.Forms;
     using IIS.Caseberry.Logging.Objects;
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using NewPlatform.Flexberry;
+    using NewPlatform.Flexberry.ORM.CurrentUserService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
@@ -25,6 +29,8 @@
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Services;
     using Unity;
+    using Unity.Injection;
+    using LockService = NewPlatform.Flexberry.Services.LockService;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -198,9 +204,29 @@
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
+
+            container.RegisterType<ICurrentUser, EmptyCurrentUser>();
+            container.RegisterType<IAuditService, AuditService>();
+            container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
             container.RegisterSingleton<IDataService, PostgresDataService>(
                 Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+
+            container.RegisterType<DataObjectEdmModelDependencies>(
+                new InjectionConstructor(
+                    container.IsRegistered<IExportService>() ? container.Resolve<IExportService>() : null,
+                    container.IsRegistered<IExportService>("Export") ? container.Resolve<IExportService>("Export") : null,
+                    container.IsRegistered<IExportStringedObjectViewService>() ? container.Resolve<IExportStringedObjectViewService>() : null,
+                    container.IsRegistered<IExportStringedObjectViewService>("ExportStringedObjectView") ? container.Resolve<IExportStringedObjectViewService>("ExportStringedObjectView") : null,
+                    container.IsRegistered<IODataExportService>() ? container.Resolve<IODataExportService>() : null,
+                    container.IsRegistered<IODataExportService>("Export") ? container.Resolve<IODataExportService>("Export") : null));
+            container.RegisterSingleton<ILockService, LockService>();
+
+            IDataService ds = container.Resolve<IDataService>();
+
+            DataServiceProvider.DataService = ds; // ds - DataService.
+            ExternalLangDef.LanguageDef = new ExternalLangDef(ds); // ds - DataService.
+            DetailVariableDef.ViewGenerator = null; // or resolving of interface IViewGenerator.
         }
 
         /// <summary>
