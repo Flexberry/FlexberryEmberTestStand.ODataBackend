@@ -27,6 +27,7 @@
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.Reports.ExportToExcel;
     using NewPlatform.Flexberry.Services;
     using Unity;
     using Unity.Injection;
@@ -204,13 +205,16 @@
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
-
             container.RegisterType<ICurrentUser, EmptyCurrentUser>();
             container.RegisterType<IAuditService, AuditService>();
             container.RegisterFactory<IBusinessServerProvider>(new Func<IUnityContainer, object>(o => new BusinessServerProvider(new UnityServiceProvider(o))), FactoryLifetime.Singleton);
             container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
             container.RegisterSingleton<IDataService, PostgresDataService>(
                 Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+
+            container.RegisterSingleton<IExportService, ExportExcelODataService>("Export");
+            container.RegisterSingleton<ISpreadsheetCustomizer, SpreadsheetCustomizer>();
+            container.RegisterSingleton<IConfigResolver, ConfigResolver>();
 
             container.RegisterType<DataObjectEdmModelDependencies>(
                 new InjectionConstructor(
