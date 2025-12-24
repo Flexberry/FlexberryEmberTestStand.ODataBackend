@@ -16,7 +16,7 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="3.0.0-beta01" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="8.0.0-beta02"></PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="8.0.0-beta03"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="5.0.0-beta01"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="8.0.0-beta06"></PackageReference>
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="7.0.3"></PackageReference>

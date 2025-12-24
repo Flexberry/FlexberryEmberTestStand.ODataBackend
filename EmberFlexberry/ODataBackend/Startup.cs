@@ -21,6 +21,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using NewPlatform.Flexberry;
     using NewPlatform.Flexberry.ORM.CurrentUserService;
+    using NewPlatform.Flexberry.ORM.ODataService;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Functions;
@@ -116,9 +117,11 @@
                     typeof(UserSetting).Assembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, app.ApplicationServices, true);
 
-                var token = builder.MapDataObjectRoute(modelBuilder);
+                DataObjectEdmModelDependencies deps = app.ApplicationServices.GetRequiredService<DataObjectEdmModelDependencies>();
+                DefaultDataObjectEdmModelBuilder modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true, dataObjectEdmModelDependencies: deps);
+
+                ManagementToken token = builder.MapDataObjectRoute(modelBuilder);
 
                 // User functions
                 token.Functions.Register(new Func<QueryParameters, string>(Test));
