@@ -1,6 +1,8 @@
 ﻿namespace EmberFlexberryDummy
 {
     using ICSSoft.STORMNET.Business;
+    using ICSSoft.STORMNET.Business.Audit;
+    using ICSSoft.STORMNET.Business.Interfaces;
     using ICSSoft.STORMNET.Security;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,22 @@
         {
             string connStr = context.Configuration["DefConnStr"];
             services.AddSingleton<ISecurityManager, EmptySecurityManager>();
-            services.AddSingleton<IDataService, PostgresDataService>(f => new PostgresDataService(f.GetService<ISecurityManager>()) { CustomizationString = connStr });
+            services.AddSingleton<IAuditService, EmptyAuditService>();
+            services.AddSingleton<IBusinessServerProvider>(serviceProvider =>
+            {
+                return new BusinessServerProvider(serviceProvider);
+            });
+
+            services.AddSingleton<IDataService>(serviceProvider =>
+            {
+                return new PostgresDataService(
+                    serviceProvider.GetRequiredService<ISecurityManager>(),
+                    serviceProvider.GetRequiredService<IAuditService>(),
+                    serviceProvider.GetRequiredService<IBusinessServerProvider>())
+                {
+                    CustomizationString = connStr
+                };
+            });
         }
     }
 }

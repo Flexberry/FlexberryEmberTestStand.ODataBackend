@@ -1,9 +1,7 @@
 ﻿namespace EmberFlexberryDummy
 {
-    using ICSSoft.Services;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
-    using Unity;
     using Unity.Microsoft.DependencyInjection;
 
     /// <summary>
@@ -11,8 +9,6 @@
     /// </summary>
     public static class Program
     {
-        private static readonly IUnityContainer Container = UnityFactory.GetContainer();
-
         /// <summary>
         /// Точка входа в приложение.
         /// </summary>
@@ -29,7 +25,7 @@
         /// <returns>Инициализатор приложения.</returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseUnityServiceProvider(Container)
+                .UseUnityServiceProvider()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
