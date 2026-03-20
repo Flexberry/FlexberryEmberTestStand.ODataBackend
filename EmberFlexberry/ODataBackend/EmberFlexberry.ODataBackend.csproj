@@ -15,7 +15,7 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="NewPlatform.Flexberry.Reports.ExportToExcel" Version="2.1.0-beta02" />
     <PackageReference Include="NewPlatform.Flexberry.StyleCopRuleset" Version="1.0.0"></PackageReference>
-    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="6.1.0"></PackageReference>
+    <PackageReference Include="NewPlatform.Flexberry.ORM.ODataService" Version="6.1.1-beta02"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.LockService" Version="3.0.0"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.LogService.Objects" Version="4.0.0"></PackageReference>
     <PackageReference Include="NewPlatform.Flexberry.ORM.PostgresDataService" Version="6.0.0"></PackageReference>
@@ -29,6 +29,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Objects\EmberFlexberry.Objects.csproj"></ProjectReference>
     <ProjectReference Include="..\BusinessServers\EmberFlexberry.BusinessServers.csproj"></ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

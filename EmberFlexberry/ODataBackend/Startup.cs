@@ -122,6 +122,7 @@
                 token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestNotTypedResult));
                 token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestMultyTypedResult));
                 token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(ODataTestMultyTypedWithLinksResult));
+                token.Functions.RegisterAction(new Func<IEnumerable<DataObject>>(GetMastersForTestAction));
 
                 // Event handlers
                 token.Events.CallbackAfterCreate = CallbackAfterCreate;
@@ -195,6 +196,25 @@
         }
 
         private static IEnumerable<Sotrudnik> GetMastersForTest(QueryParameters queryParameters)
+        {
+            SQLDataService dataService = DataServiceProvider.DataService as SQLDataService;
+
+            ICSSoft.STORMNET.View view = new ICSSoft.STORMNET.View();
+            view.DefineClassType = typeof(Sotrudnik);
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Name));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Familiia));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.DataRozhdeniia));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Departament));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Departament.Name));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Departament.Vid));
+            view.AddProperties(Information.ExtractPropertyPath<Sotrudnik>(x => x.Departament.Vid.Name));
+            var lcs = LoadingCustomizationStruct.GetSimpleStruct(typeof(Sotrudnik), view);
+            var data = dataService.LoadObjects(lcs).Cast<Sotrudnik>();
+
+            return data;
+        }
+
+        private static IEnumerable<Sotrudnik> GetMastersForTestAction()
         {
             SQLDataService dataService = DataServiceProvider.DataService as SQLDataService;
 
